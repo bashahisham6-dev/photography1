@@ -1,5 +1,6 @@
 const app = document.getElementById('app');
 
+// --- MUSIC DATA & STATE ---
 const playlist = [
     { title: "Hip Shop", src: "music/Hip Shop.mp3" },
     { title: "After Hours", src: "music/After Hours.mp3" },
@@ -10,11 +11,13 @@ let currentSongIndex = 0;
 const audio = new Audio(playlist[currentSongIndex].src);
 audio.loop = true;
 
+// --- DOM ELEMENTS FOR LIGHTBOX & EXIF ---
 const lb = document.createElement('div');
 lb.id = 'lightbox';
-lb.innerHTML = '<img src="" id="lb-img">';
+lb.innerHTML = '<div id="exif-data"></div><img src="" id="lb-img">';
 document.body.appendChild(lb);
 const lbImg = document.getElementById('lb-img');
+const exifBox = document.getElementById('exif-data');
 
 const projectData = {
     p3:  { name: "Things Organized Neatly", count: 3 },
@@ -34,8 +37,7 @@ const routes = {
     home: `<div class="home-content">
             <h1>PHOTOGRAPHY PORTFOLIO</h1>
             <h2>By Hisham Basha</h2>
-            <p>Welcome to my photography portfolio! It was built in HTML, Javascript and CSS by me! Use the arrow keys on your keyboard to scroll around. Click the image you want to view in fullscreen, and click your mouse anywhere thats not on the image to stop viewing.</p>
-            
+            <p>Welcome to my photography portfolio! Use arrow keys or swipe to explore. Click an image for fullscreen.</p>
             <div id="music-player">
                 <div class="track-info">
                     <span class="arrow" onclick="changeSong(-1)">&#9664;</span>
@@ -51,18 +53,22 @@ const routes = {
                 </div>
             </div>
         </div>`,
-    p1: `<div class="embed-container"><iframe src="https://docs.google.com/presentation/d/1RmTM2ENW69BJVClTs9nfXgqPF-HGVP1QNny_K08Zd2M/embed?start=true&loop=false&delayms=3000" frameborder="0" width="100%" height="100%" allowfullscreen></iframe></div>`,
-    p2: `<div class="embed-container"><iframe src="https://docs.google.com/presentation/d/1vWq9nL59OlkmV5P9IU8l4qfFaSRzVidDIj9KgspEXrI/embed?start=true&loop=false&delayms=3000" frameborder="0" width="100%" height="100%" allowfullscreen></iframe></div>`
+    about: `<div class="home-content">
+            <h2>ABOUT ME</h2>
+            <p>I am a photographer who occasionally writes questionable JavaScript. This portfolio represents my work and my struggle with basic logic.</p>
+        </div>`
 };
 
-function changeSong(dir) {
+// --- MUSIC LOGIC ---
+window.changeSong = function(dir) {
     currentSongIndex = (currentSongIndex + dir + playlist.length) % playlist.length;
     const wasPlaying = !audio.paused;
     audio.src = playlist[currentSongIndex].src;
-    document.getElementById('song-title').innerText = playlist[currentSongIndex].title;
+    const titleEl = document.getElementById('song-title');
+    if (titleEl) titleEl.innerText = playlist[currentSongIndex].title;
     if (wasPlaying) audio.play();
     updatePlayBtn();
-}
+};
 
 function updatePlayBtn() {
     const btn = document.getElementById('play-pause-btn');
@@ -74,76 +80,79 @@ function initMusicUI() {
     const muteBtn = document.getElementById('mute-btn');
     const playBtn = document.getElementById('play-pause-btn');
     if (!slider) return;
-
     updatePlayBtn();
-
-    slider.addEventListener('input', (e) => {
-        audio.volume = e.target.value;
-        audio.muted = false;
-        muteBtn.innerText = "Mute";
-    });
-
-    playBtn.addEventListener('click', () => {
-        if (audio.paused) audio.play();
-        else audio.pause();
-        updatePlayBtn();
-    });
-
-    muteBtn.addEventListener('click', () => {
-        audio.muted = !audio.muted;
-        muteBtn.innerText = audio.muted ? "Unmute" : "Mute";
-    });
-
-    document.addEventListener('click', () => {
-        if(audio.paused && audio.currentTime === 0) {
-            audio.play().then(updatePlayBtn);
-        }
-    }, { once: true });
+    slider.oninput = (e) => { audio.volume = e.target.value; audio.muted = false; if(muteBtn) muteBtn.innerText = "Mute"; };
+    playBtn.onclick = () => { audio.paused ? audio.play() : audio.pause(); updatePlayBtn(); };
+    muteBtn.onclick = () => { audio.muted = !audio.muted; muteBtn.innerText = audio.muted ? "Unmute" : "Mute"; };
 }
 
-let posX = 0; 
-let posY = 0;
+// --- MOVEMENT LOGIC ---
+let posX = 0, posY = 0;
 const moveSpeed = 15;
 const keysPressed = {};
+let touchStartX = 0, touchStartY = 0;
 
 window.addEventListener('keydown', (e) => { keysPressed[e.key] = true; });
 window.addEventListener('keyup', (e) => { keysPressed[e.key] = false; });
 
+window.addEventListener('touchstart', (e) => {
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+}, { passive: false });
+
+window.addEventListener('touchmove', (e) => {
+    const link = window.location.hash.replace('#', '') || 'home';
+    if (lb.style.display === 'flex' || routes[link]) return;
+    const touchX = e.touches[0].clientX;
+    const touchY = e.touches[0].clientY;
+    posX += (touchX - touchStartX);
+    posY += (touchY - touchStartY);
+    touchStartX = touchX; touchStartY = touchY;
+    e.preventDefault();
+}, { passive: false });
+
 function updatePosition() {
-    if (lb.style.display === 'flex') {
+    const link = window.location.hash.replace('#', '') || 'home';
+    if (lb.style.display === 'flex' || routes[link]) {
+        app.style.transform = `translate(0px, 0px)`;
         requestAnimationFrame(updatePosition);
         return;
     }
-    const totalH = app.scrollHeight;
-    const totalW = app.scrollWidth;
-    const winH = window.innerHeight;
-    const winW = window.innerWidth;
-    const minX = -(totalW - winW);
-    const minY = -(totalH - winH);
-
+    const minX = -(app.scrollWidth - window.innerWidth);
+    const minY = -(app.scrollHeight - window.innerHeight);
     if (keysPressed['ArrowRight']) posX -= moveSpeed;
     if (keysPressed['ArrowLeft'])  posX += moveSpeed;
     if (keysPressed['ArrowDown'])  posY -= moveSpeed;
     if (keysPressed['ArrowUp'])    posY += moveSpeed;
-
-    if (posX > 0) posX = 0;
-    if (posX < minX) posX = minX;
-    if (posY > 0) posY = 0;
-    if (posY < minY) posY = minY;
-
+    posX = Math.min(0, Math.max(minX, posX));
+    posY = Math.min(0, Math.max(minY, posY));
     app.style.transform = `translate(${posX}px, ${posY}px)`;
     requestAnimationFrame(updatePosition);
 }
 requestAnimationFrame(updatePosition);
 
+// --- EXIF LOGIC ---
+function updateExif(imgElement) {
+    exifBox.style.display = 'block';
+    exifBox.innerHTML = 'Reading EXIF...';
+    EXIF.getData(imgElement, function() {
+        const make = EXIF.getTag(this, "Make") || "Unknown";
+        const model = EXIF.getTag(this, "Model") || "Camera";
+        const fStop = EXIF.getTag(this, "FNumber") ? `f/${EXIF.getTag(this, "FNumber")}` : "N/A";
+        const exposure = EXIF.getTag(this, "ExposureTime") ? `1/${Math.round(1/EXIF.getTag(this, "ExposureTime"))}s` : "N/A";
+        const iso = EXIF.getTag(this, "ISOSpeedRatings") || "N/A";
+        exifBox.innerHTML = `<strong>${make} ${model}</strong><span>Aperture: ${fStop}</span><span>Shutter: ${exposure}</span><span>ISO: ${iso}</span>`;
+    });
+}
+
+// --- NAVIGATION & GALLERY ---
 function generateGallery(id) {
     const p = projectData[id];
     if (!p) return routes.home;
-    const gridClass = p.count <= 2 ? 'grid static-grid' : 'grid';
-    let html = `<div class="${gridClass}">`;
+    let html = `<div class="grid">`;
     for (let i = 1; i <= p.count; i++) {
         const folder = encodeURIComponent(p.name);
-        html += `<img src="${folder}/${i}.jpg" onerror="this.onerror=function(){this.src='${folder}/${i}.png'};this.src='${folder}/${i}.jpg'">`;
+        html += `<img src="${folder}/${i}.jpg" loading="lazy" onerror="this.src='placeholder.jpg'">`;
     }
     return html + '</div>';
 }
@@ -152,8 +161,7 @@ function navigate() {
     const link = window.location.hash.replace('#', '') || 'home';
     app.innerHTML = (routes[link]) ? routes[link] : generateGallery(link);
     if (link === 'home') initMusicUI();
-    posX = 0; 
-    posY = 0;
+    posX = 0; posY = 0;
     app.style.transform = `translate(0px, 0px)`;
 }
 
@@ -161,10 +169,10 @@ app.addEventListener('click', (e) => {
     if (e.target.tagName === 'IMG' && !e.target.closest('#lightbox')) {
         lbImg.src = e.target.src;
         lb.style.display = 'flex';
+        updateExif(e.target);
     }
 });
 
-lb.addEventListener('click', () => lb.style.display = 'none');
-window.addEventListener('hashchange', navigate);
-window.addEventListener('load', navigate);
-document.querySelectorAll('nav a').forEach(a => a.href = `#${a.getAttribute('data-link')}`);
+lb.onclick = () => { lb.style.display = 'none'; exifBox.style.display = 'none'; };
+window.onhashchange = navigate;
+window.onload = navigate;

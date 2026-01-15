@@ -1,6 +1,11 @@
+/* You'll probably mess this up, so just copy the WHOLE thing */
 :root {
     --primary: #ff3e3e;
     --bg: #000000;
+    --text: #ffffff;
+    --secondary: #888888;
+    --glass: rgba(255, 255, 255, 0.05);
+    --transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
 * {
@@ -11,46 +16,55 @@
 
 body, html {
     background-color: var(--bg);
-    color: #ffffff;
-    font-family: 'Inter', sans-serif;
+    color: var(--text);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     overflow: hidden; 
     height: 100vh;
     width: 100vw;
 }
 
+/* NAVIGATION - Stop making these so bulky */
 nav {
-    background: rgba(0, 0, 0, 0.9);
-    backdrop-filter: blur(20px);
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 1.2rem;
+    padding: 1rem;
     position: fixed;
     top: 0;
     width: 100%;
     z-index: 9999;
     display: flex;
     justify-content: center;
-    gap: 15px;
+    gap: 20px;
+    flex-wrap: wrap;
 }
 
 nav a {
-    color: #888;
+    color: var(--secondary);
     text-decoration: none;
-    font-size: 0.75rem;
-    font-weight: 700;
+    font-size: 0.65rem;
+    font-weight: 800;
     text-transform: uppercase;
-    transition: 0.3s ease;
+    letter-spacing: 1px;
+    transition: var(--transition);
 }
 
-nav a:hover { color: var(--primary); }
+nav a:hover {
+    color: var(--primary);
+    transform: translateY(-1px);
+}
 
+/* APP CONTAINER */
 #app {
     position: absolute;
     top: 0;
     left: 0;
     will-change: transform;
-    transition: transform 0.05s linear; 
+    transition: transform 0.1s linear; 
 }
 
+/* PAGE CONTENT */
 .home-content, .embed-container {
     height: 100vh;
     width: 100vw;
@@ -59,28 +73,30 @@ nav a:hover { color: var(--primary); }
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 0 20px;
+    padding: 0 10%;
 }
 
-.home-content h1 { font-size: 8vw; font-weight: 900; margin-bottom: 10px; }
-.home-content h2 { font-size: 2vw; color: var(--primary); margin-bottom: 20px; }
-.home-content p { font-size: 1.1rem; max-width: 800px; color: #bbb; line-height: 1.6; }
+.home-content h1 {
+    font-size: clamp(2rem, 8vw, 6rem);
+    font-weight: 900;
+    line-height: 0.9;
+    margin-bottom: 1rem;
+    letter-spacing: -2px;
+}
 
+.home-content h2 {
+    font-size: clamp(1rem, 2vw, 1.5rem);
+    color: var(--primary);
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+}
+
+/* GALLERY GRID */
 .grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    grid-gap: 0;
-    width: 150vw; 
+    width: 150vw; /* Keep your weird movement logic width */
     min-height: 100vh;
-}
-
-.grid.static-grid {
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 40px;
 }
 
 .grid img {
@@ -88,116 +104,106 @@ nav a:hover { color: var(--primary); }
     height: 100vh; 
     object-fit: cover;
     display: block;
-    filter: brightness(0.9);
-    transition: filter 0.3s ease, outline 0.1s ease;
-    cursor: zoom-in;
-}
-
-.grid.static-grid img {
-    width: auto;
-    max-width: 45%;
-    height: auto;
-    max-height: 80vh;
-    object-fit: contain;
+    filter: grayscale(0.5) brightness(0.7);
+    transition: var(--transition);
+    cursor: crosshair;
 }
 
 .grid img:hover {
-    filter: brightness(1);
-    outline: 5px solid var(--primary);
-    outline-offset: -5px;
+    filter: grayscale(0) brightness(1);
+    transform: scale(0.97);
+    outline: 8px solid var(--primary);
+    outline-offset: -15px;
+    z-index: 10;
 }
 
-/* MUSIC PLAYER */
-#music-player {
-    margin-top: 40px;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 30px;
-    border-radius: 15px;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    align-items: center;
-    min-width: 350px;
-}
-
-.track-info {
-    display: flex;
-    align-items: center;
-    gap: 25px;
-    font-size: 1.2rem;
-    font-weight: 600;
-}
-
-.arrow {
-    cursor: pointer;
-    color: var(--primary);
-    user-select: none;
-    transition: 0.2s;
-    font-size: 1.5rem;
-}
-
-.arrow:hover { transform: scale(1.4); }
-
-.controls {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    width: 100%;
-}
-
-/* CUSTOM SLIDER */
-#volume-slider {
-    -webkit-appearance: none;
-    flex-grow: 1;
-    height: 6px;
-    background: #333;
-    border-radius: 5px;
-    outline: none;
-}
-
-#volume-slider::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    width: 18px;
-    height: 18px;
-    background: var(--primary);
-    border-radius: 50%;
-    cursor: pointer;
-    box-shadow: 0 0 10px rgba(255, 62, 62, 0.5);
-}
-
-.btn-group {
-    display: flex;
-    gap: 10px;
-}
-
-.player-btn {
-    background: #222;
-    border: 1px solid #444;
-    color: white;
-    padding: 8px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: bold;
+/* EXIF DATA OVERLAY */
+#exif-data {
+    position: absolute;
+    top: 40px;
+    left: 40px;
+    background: rgba(0, 0, 0, 0.9);
+    padding: 20px;
+    border-left: 4px solid var(--primary);
+    font-family: 'Courier New', monospace;
     font-size: 0.75rem;
+    line-height: 1.6;
+    pointer-events: none;
+    z-index: 10001;
+    box-shadow: 20px 20px 60px rgba(0,0,0,0.5);
+}
+
+#exif-data strong {
+    color: var(--primary);
+    display: block;
+    margin-bottom: 5px;
     text-transform: uppercase;
-    transition: 0.2s;
 }
 
-.player-btn:hover {
-    background: var(--primary);
-    border-color: var(--primary);
+#exif-data span {
+    display: block;
+    color: #eee;
 }
 
+/* LIGHTBOX */
 #lightbox {
     position: fixed;
-    top: 0; left: 0;
-    width: 100vw; height: 100vh;
-    background: rgba(0,0,0,0.98);
+    top: 0; 
+    left: 0;
+    width: 100vw; 
+    height: 100vh;
+    background: radial-gradient(circle, rgba(20,20,20,0.9) 0%, rgba(0,0,0,1) 100%);
     display: none;
     justify-content: center;
     align-items: center;
     z-index: 10000;
+    backdrop-filter: blur(10px);
 }
 
-#lightbox img { max-width: 95%; max-height: 95%; object-fit: contain; }
+#lightbox img {
+    max-width: 85%;
+    max-height: 85%;
+    object-fit: contain;
+    box-shadow: 0 0 50px rgba(0,0,0,0.8);
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+/* MUSIC PLAYER BOX */
+#music-player {
+    margin-top: 50px;
+    background: var(--glass);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 25px;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    min-width: 300px;
+}
+
+#song-title {
+    font-weight: 700;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+}
+
+#play-pause-btn {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 10px;
+    font-weight: 900;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+#play-pause-btn:hover {
+    background: white;
+    color: black;
+}
+
+/* SCROLLBAR - because standard ones are ugly */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: #000; }
+::-webkit-scrollbar-thumb { background: var(--primary); }
