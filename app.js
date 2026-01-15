@@ -54,7 +54,7 @@ const routes = {
     p2: `<div class="embed-container"><iframe src="https://docs.google.com/presentation/d/1vWq9nL59OlkmV5P9IU8l4qfFaSRzVidDIj9KgspEXrI/embed?start=true&loop=false&delayms=3000" frameborder="0" width="100%" height="100%" allowfullscreen></iframe></div>`,
     about: `<div class="home-content">
             <h2>ABOUT ME</h2>
-            <p>I am a photographer who occasionally writes questionable JavaScript. This portfolio represents my work and my struggle with basic logic.</p>
+            <p>I am a photographer who is goated at this. also please do not grade this part of the site yet, it is not done</p>
         </div>`
 };
 
