@@ -119,6 +119,7 @@ const routes = {
     home: `<div class="home-content">
             <h1>PHOTOGRAPHY PORTFOLIO</h1>
             <h2>By Hisham Basha</h2>
+            <p>Welcome to my photography portfolio! It was built in HTML, Javascript and CSS by me!  Use arrow keys on your keyboard or swipe if you are on mobile to explore. Click or tap on an image for fullscreen. Before you begin looking around, please click or tap anywhere.</p>
             <div id="music-player">
                 <div class="track-info">
                     <span class="arrow" onclick="changeSong(-1)">&#9664;</span>
