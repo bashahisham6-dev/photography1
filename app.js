@@ -144,6 +144,14 @@ about: `<div class="home-content">
 <p> I personally started my photography journey in the Emerald City of Seattle, where I took a whopping 160 photos in the span of 6 days. They were... not the best, I must say. </p>
 <p> Before freshman year started, I was presented with a list of classes I could take, and I saw Photography 1 as an option </p>
 <p> I chose Photography 1 from that list, and I learned of so many photography techniques such as the Dutch Tilt and Framing. </p>
+<p> Here's a photo of me! </p>
+    
+    <img 
+        src="about/me.webp" 
+        alt="Photo of Hisham Basha"
+        class="about-img"
+        loading="lazy"
+    >
 
 </div>`};
 
