@@ -147,7 +147,7 @@ about: `<div class="home-content">
 <p> Here's a photo of me! </p>
     
     <img 
-        src="image_2026-01-21_194422322.png" 
+        src="image_2026-01-21_194422322.heic" 
         alt="Photo of Hisham Basha"
         class="about-img"
         loading="lazy"
