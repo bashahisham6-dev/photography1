@@ -139,15 +139,11 @@ const routes = {
     p2: `<div class="embed-container"><iframe src="https://docs.google.com/presentation/d/1vWq9nL59OlkmV5P9IU8l4qfFaSRzVidDIj9KgspEXrI/embed?start=true&loop=false&delayms=3000" frameborder="0" width="100%" height="100%" allowfullscreen></iframe></div>`,
 about: `<div class="home-content">
     <h2>ABOUT ME</h2>
-    <p>I am a photographer named Hisham Basha. One day, I took pictures. Then, I was classified as a photographer. The best photographer photography has ever photographed. I am THE photographer.</p>
-    
-    <p>I'm considering getting my name changed to Photographer 'Photograph' Photography just for the sake of the profession of Photography.</p>
-    
-    <p>Anyhow, photography inspires me to take photographs as a photographer who believes that photography blends photographs with photographic science, so every photograph reminds me, the photographer why photography matters more than any single photograph, to the photographer who loves photography through each photograph.</p>
-    
-    <p>I LOVE photography, as photography is my passion that tastefully blends photographs with photography and photographic science, so I love photography because I take photographs while doing photography, basically making me a photographer, the best photographer that ever took a photograph in the history of photography.</p>
-
-    <p>I love to take photographs of nature, because nature is a photography subject that I can take photographs of because photography is great and I personally feel that photography is an art to be photographed due to its photograph-able nature.</p>
+<p> Hello, and welcome to my photography portfolio! </p>
+<p> Here is where all the photos I took in my freshman year photography class are stored. </p>
+<p> I personally started my photography journey in the Emerald City of Seattle, where I took a whopping 160 photos in the span of 6 days. They were... not the best, I must say. </p>
+<p> Before freshman year started, I was presented with a list of classes I could take, and I saw Photography 1 as an option </p>
+<p> I chose Photography 1 from that list, and I learned of so many photography techniques such as the Dutch Tilt and Framing. </p>
 
 </div>`};
 
