@@ -142,8 +142,8 @@ about: `<div class="home-content">
 <p> Hello, and welcome to my photography portfolio! </p>
 <p> Here is where all the photos I took in my freshman year photography class are stored. </p>
 <p> I personally started my photography journey in the Emerald City of Seattle, where I took a whopping 160 photos in the span of 6 days. They were... not the best, I must say. </p>
-<p> Before freshman year started, I was presented with a list of classes I could take, and I saw Photography 1 as an option </p>
-<p> I chose Photography 1 from that list, and I learned of so many photography techniques such as the Dutch Tilt and Framing. </p>
+<p> Before freshman year started, I was presented with a list of classes I could take.</p>
+<p> I chose Photography 1 from that list, and I learned of so many photography techniques such as the Dutch Tilt, Framing and how to properly edit an image that actively improve my photo-taking in daily life.</p>
 <p> Here's a photo of me! </p>
     
     <img 
