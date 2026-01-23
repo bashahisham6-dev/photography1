@@ -209,3 +209,11 @@ nav a:hover { color: var(--primary); }
     color: var(--primary);
     letter-spacing: 2px;
 }
+
+.about-img {
+    max-width: 300px;
+    width: 100%;
+    height: auto;
+    display: block;
+    margin: 30px auto;
+}
